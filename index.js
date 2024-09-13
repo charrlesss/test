@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const mysql = require("mysql2");
-
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 const _PORT = 9999;
 
 const db = mysql.createConnection({
@@ -26,16 +27,10 @@ async function executeQuery(sql, callback) {
 
 app.get("/users", async (req, res) => {
   try {
-    executeQuery(`select * from users`, (error, rows) => {
-      if (error) {
-        res.send({
-          message: error.message,
-        });
-      }
-      res.send({
-        message: "manok na pula",
-        rows,
-      });
+    const users = await prisma.users
+    res.send({
+      message: "manok na pula",
+      users,
     });
     
   } catch (error) {
