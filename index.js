@@ -5,12 +5,12 @@ const mysql = require("mysql2");
 
 const _PORT = 9999;
 
-// const db = mysql.createConnection({
-//   host: "localhost",
-//   user: "upward",
-//   password: "upward_123",
-//   database: "upward",
-// });
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "upward",
+  password: "upward_123",
+  database: "upward",
+});
 // async function executeQuery(sql, callback) {
 //     if (db.state === 'disconnected') {
 //         db.connect(err => {
