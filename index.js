@@ -1,38 +1,78 @@
 const express = require("express");
 const app = express();
 const mysql = require("mysql2");
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const { PrismaClient } = require("@prisma/client");
 const _PORT = 9999;
+const prisma = new PrismaClient();
 
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "upward_user",
-  password: "upward123",
-  database: "upward",
-});
-async function executeQuery(sql, callback) {
-  if (db.state === "disconnected") {
-    db.connect((err) => {
-      if (err) {
-        console.log(err);
-        return callback(err, null);
-      }
-      db.query(sql, callback);
+app.get("/create-user",async(req,res)=>{
+  try {
+    const users = await prisma.users.createMany({
+      data: [
+        {
+          username: "charles1",
+          id: 0,
+        },
+        {
+          username: "charles2",
+          id: 0,
+        },
+        {
+          username: "charles3",
+          id: 0,
+        },
+        {
+          username: "charles4",
+          id: 0,
+        },
+        {
+          username: "charles5",
+          id: 0,
+        },
+        {
+          username: "charles6",
+          id: 0,
+        },
+        {
+          username: "charles",
+          id: 0,
+        },
+      ],
     });
-  } else {
-    db.query(sql, callback);
-  }
-}
 
+    res.send({
+      message: "Successfully Create",
+      users,
+    });
+  } catch (error) {
+    
+    res.send({
+      message: error.message,
+    });
+  }
+})
 app.get("/users", async (req, res) => {
   try {
-    const users = await prisma.users
+      const users = await prisma.users.findMany()
     res.send({
       message: "manok na pula",
       users,
     });
-    
+  } catch (error) {
+    console.log(error.message);
+    res.send({
+      message: error.message,
+    });
+  }
+});
+
+app.get("/users", async (req, res) => {
+  try {
+    const users = await prisma.user.findMany();
+    res.send({
+      message: "manok na pula",
+      users,
+    });
   } catch (error) {
     console.log(error.message);
     res.send({
