@@ -7,8 +7,8 @@ const _PORT = 9999;
 
 const db = mysql.createConnection({
   host: "localhost",
-  user: "upward",
-  password: "upward_123",
+  user: "root",
+  password: "",
   database: "upward",
 });
 // async function executeQuery(sql, callback) {
