@@ -71,6 +71,20 @@ app.get("/api/users", async (req, res) => {
     });
   }
 });
+app.get("/api/userss", async (req, res) => {
+  try {
+    const users = await prisma.users.findMany();
+    res.send({
+      message: "manok na pula",
+      users,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.send({
+      message: error.message,
+    });
+  }
+});
 
 
 app.get("*", (req, res) => {
