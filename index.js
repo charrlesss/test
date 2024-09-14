@@ -4,8 +4,13 @@ const mysql = require("mysql2");
 const { PrismaClient } = require("@prisma/client");
 const _PORT = 9999;
 const prisma = new PrismaClient();
+const path = require('path')
+var cors = require('cors');
+app.use(cors());
 
-app.get("/create-user",async(req,res)=>{
+app.use(express.static(path.join(__dirname, "/view")));
+
+app.get("/api/create-user",async(req,res)=>{
   try {
     const users = await prisma.users.createMany({
       data: [
@@ -51,9 +56,10 @@ app.get("/create-user",async(req,res)=>{
     });
   }
 })
-app.get("/users", async (req, res) => {
+
+app.get("/api/users", async (req, res) => {
   try {
-      const users = await prisma.users.findMany()
+    const users = await prisma.users.findMany();
     res.send({
       message: "manok na pula",
       users,
@@ -66,20 +72,11 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.get("/users", async (req, res) => {
-  try {
-    const users = await prisma.user.findMany();
-    res.send({
-      message: "manok na pula",
-      users,
-    });
-  } catch (error) {
-    console.log(error.message);
-    res.send({
-      message: error.message,
-    });
-  }
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/view/", "index.html"));
 });
+
 
 app.listen(_PORT, () => {
   console.log(`listen on http://localhost:${_PORT}/`);
